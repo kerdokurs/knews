@@ -3,6 +3,8 @@
   import { routes } from './routes';
   import { firestore } from './firebase';
 
+  import Login from '@/Login.svelte';
+
   import { onMount } from 'svelte';
 
   import { uudised } from './stores/uudised';
@@ -17,5 +19,6 @@
 </style>
 
 <main>
+  <Login />
   <Router {routes} />
 </main>

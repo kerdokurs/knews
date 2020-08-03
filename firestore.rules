@@ -5,8 +5,20 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
-    match /uudised/{document=**} {
-      allow read, write;
+    match /uudised/{uudis} {
+      allow read;
+
+      allow create: if request.auth != null && request.resource.data.autor.uid == request.auth.uid;
+      allow update: if request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid;
+      allow delete: if request.auth != null && request.auth.uid == resource.data.autor.uid;
+
+      match /kommentaarid/{kommentaar} {
+        allow read;
+
+        allow create: if request.auth != null && request.resource.data.autor.uid == request.auth.uid;
+        allow update: if request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid;
+        allow delete: if request.auth != null && request.auth.uid == resource.data.autor.uid;
+      }
     }
   }
 }

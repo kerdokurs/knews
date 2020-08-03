@@ -15,7 +15,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const firestore = firebase.firestore();
-firestore.settings({ host: 'localhost:8080', ssl: false });
+// firestore.settings({ host: 'localhost:8080', ssl: false });
 
 const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 
