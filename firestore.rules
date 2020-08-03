@@ -5,12 +5,20 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    function isEditor() {
+      return get(/databases/$(database)/documents/kasutajad/$(request.auth.uid)).data.editor == true;
+    }
+
+    match /kasutajad/{uid} {
+      allow read, update: if request.auth != null && request.auth.uid == uid;
+    }
+
     match /uudised/{uudis} {
       allow read;
 
-      allow create: if request.auth != null && request.resource.data.autor.uid == request.auth.uid;
-      allow update: if request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid;
-      allow delete: if request.auth != null && request.auth.uid == resource.data.autor.uid;
+      allow create: if request.auth != null && request.resource.data.autor.uid == request.auth.uid && isEditor();
+      allow update: if request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid && isEditor();
+      allow delete: if request.auth != null && request.auth.uid == resource.data.autor.uid && isEditor();
 
       match /kommentaarid/{kommentaar} {
         allow read;

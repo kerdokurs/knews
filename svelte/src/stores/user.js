@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
 
-export const uid = writable('');
-export const displayName = writable('');
+export const user = writable(null);
+
+//TODO: Kasuta localStorage?

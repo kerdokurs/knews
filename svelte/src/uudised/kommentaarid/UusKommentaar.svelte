@@ -1,7 +1,7 @@
 <script>
-  import { firestore, serverTimestamp } from '@/firebase';
+  import { firestore, serverTimestamp, analytics } from '@/firebase';
 
-  import { uid, displayName } from '@/stores/user';
+  import { user } from '@/stores/user';
 
   let kommentaar = {
     pealkiri: '',
@@ -11,7 +11,9 @@
   export let id;
 
   async function onSubmit() {
-    if (!uid || !displayName) return;
+    if (!$user) return;
+
+    analytics.logEvent('add_comment', { name: 'Uus kommentaar' });
 
     const doc = firestore
       .collection('uudised')
@@ -21,8 +23,8 @@
 
     kommentaar.id = doc.id;
     kommentaar.autor = {
-      uid: $uid,
-      displayName: $displayName,
+      uid: $user.uid,
+      displayName: $user.displayName,
     };
     kommentaar.loodud = serverTimestamp();
     kommentaar.uudis = { id };
@@ -33,7 +35,7 @@
 </script>
 
 <section class="uus-kommentaar">
-  {#if !$uid}
+  {#if !$user}
     <p>Kommentaaride lisamiseks pead olema sisselogitud.</p>
   {:else}
     <form on:submit|preventDefault={onSubmit}>

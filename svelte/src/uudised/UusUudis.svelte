@@ -1,9 +1,9 @@
 <script>
-  import { firestore, serverTimestamp } from '../firebase';
+  import { firestore, serverTimestamp, analytics } from '@/firebase';
+  import { navigateTo } from 'svelte-router-spa';
 
-  import { uid, displayName } from '@/stores/user';
-
-  export let laeUudised;
+  import { user } from '@/stores/user';
+  import { laeUudised } from '@/laeUudised';
 
   let uudis = {
     pealkiri: '',
@@ -11,23 +11,39 @@
   };
 
   async function onSubmit() {
-    if (!$uid || !displayName) return;
+    if (!$user) return;
 
-    uudis.id = uudis.pealkiri.toLowerCase().split(' ').join('-');
+    const id = uudis.pealkiri
+      .toLowerCase()
+      .substring(0, 40)
+      .replace(/([\\\\\/?!.,-<>_'*~=+])/gi, '')
+      .replace(/[õö]/gi, 'o')
+      .replace(/ä/gi, 'a')
+      .replace(/ü/gi, 'u')
+      .split(' ')
+      .join('-');
+
+    uudis.id = id;
+    uudis.sisu = uudis.sisu.replace(/\n/gi, '&nl;');
     uudis.loodud = serverTimestamp();
     uudis.autor = {
-      uid: $uid,
-      displayName: $displayName,
+      uid: $user.uid,
+      displayName: $user.displayName,
     };
+    uudis.kommentaare = 0;
+
+    console.log(uudis.sisu);
 
     await firestore.collection('uudised').doc(uudis.id).set(uudis);
+    analytics.logEvent('add_new', { name: 'Uus uudis' });
     uudis = {};
     laeUudised();
+    navigateTo(`uudis/${id}`);
   }
 </script>
 
 <section class="uus-uudis">
-  {#if $uid}
+  {#if $user}
     <form on:submit|preventDefault={onSubmit}>
       <div class="row">
         <div class="six columns">

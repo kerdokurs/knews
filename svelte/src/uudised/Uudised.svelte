@@ -2,17 +2,51 @@
   import { firestore } from '@/firebase';
 
   import { uudised } from '@/stores/uudised';
-  import { laeUudised } from '@/laeUudised';
-
-  import { uid } from '@/stores/user';
 
   import UusUudis from './UusUudis.svelte';
-
-  async function kustuta(uudisId) {
-    await firestore.collection('uudised').doc(uudisId).delete();
-    laeUudised();
-  }
 </script>
+
+<style>
+  .uudised-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .uudis-card {
+    max-width: 100%;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #d1d1d1;
+    border-radius: 3px;
+  }
+
+  .uudis-title {
+    font-size: 1.6em;
+    font-family: Recursive, sans-serif;
+    overflow-wrap: break-word;
+  }
+
+  .uudis-title a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  .uudis-title a:hover {
+    border-bottom: 1px solid #000;
+  }
+
+  .uudis-sisu {
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
+    max-height: 100px;
+  }
+
+  .uudis-metadata {
+    font-size: 0.75em;
+    margin-bottom: 0 !important;
+  }
+</style>
 
 <svelte:head>
   <title>Uudised - kNews</title>
@@ -21,19 +55,20 @@
 <section class="uudised">
   <div class="uudised-grid">
     {#each $uudised as uudis}
-      <div class="uudis">
-        <h3>
+      <div class="uudis-card">
+        <span class="uudis-title">
           <a href={`/uudis/${uudis.id}`}>{uudis.pealkiri}</a>
-        </h3>
-        <span>Kommentaare: {uudis.kommentaare}</span>
-        <p>
-          {uudis.sisu.length > 40 ? uudis.sisu.substring(0, 40) + '...' : uudis.sisu}
-        </p>
-        {#if uudis.autor.uid === $uid}
-          <button on:click={kustuta(uudis.id)}>Kustuta</button>
-        {/if}
+        </span>
+        <br />
+        <span class="uudis-sisu">
+          {uudis.sisu.length > 200 ? uudis.sisu.substring(0, 200) + '...' : uudis.sisu}
+        </span>
+        <div class="uudis-metadata">
+          <span>Kommentaare: {uudis.kommentaare}</span>
+          <br />
+          <span>Autor: {uudis.autor.displayName}</span>
+        </div>
       </div>
     {/each}
   </div>
 </section>
-<UusUudis {laeUudised} />
