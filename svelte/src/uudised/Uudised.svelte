@@ -9,7 +9,6 @@
 <style>
   .uudised-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .uudis-card {
@@ -46,6 +45,18 @@
     font-size: 0.75em;
     margin-bottom: 0 !important;
   }
+
+  @media (min-width: 400px) {
+    .uudised-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  @media (min-width: 750px) {
+    .uudised-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 </style>
 
 <svelte:head>
@@ -61,7 +72,9 @@
         </span>
         <br />
         <span class="uudis-sisu">
-          {uudis.sisu.length > 200 ? uudis.sisu.substring(0, 200) + '...' : uudis.sisu}
+          {uudis.sisu.length > 200 ? uudis.sisu
+                .substring(0, 200)
+                .replace(/\&nl\;/gi, ' ') + '...' : uudis.sisu}
         </span>
         <div class="uudis-metadata">
           <span>Kommentaare: {uudis.kommentaare}</span>
