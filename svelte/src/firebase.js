@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 import 'firebase/analytics';
 import 'firebase/performance';
 
@@ -23,7 +24,9 @@ const analytics = firebase.analytics();
 const performance = firebase.performance();
 
 const firestore = firebase.firestore();
-// firestore.settings({ host: 'localhost:8080', ssl: false });
+firestore.settings({ host: 'localhost:8080', ssl: false });
+
+const storage = firebase.storage();
 
 const serverTimestamp = firebase.firestore.FieldValue.serverTimestamp;
 
@@ -43,11 +46,19 @@ auth.onAuthStateChanged(async (_user) => {
   if (_user) {
     const { uid, displayName } = _user;
     const userRecord = await firestore.collection('kasutajad').doc(uid).get();
-    const { editor } = userRecord.data();
+    const { editor } = userRecord.data() || { editor: false };
     user.set({ uid, displayName, editor });
   } else {
     user.set(null);
   }
 });
 
-export { firestore, serverTimestamp, analytics, performance, login, logout };
+export {
+  storage,
+  firestore,
+  serverTimestamp,
+  analytics,
+  performance,
+  login,
+  logout,
+};

@@ -45,6 +45,12 @@
     cursor: pointer;
     color: red;
   }
+
+  .redigeeri {
+    text-decoration: none;
+    border: none;
+    color: green;
+  }
 </style>
 
 <svelte:head>
@@ -58,14 +64,20 @@
     <span class="uudis-title">{uudis.pealkiri}</span>
     <br />
     <span class="uudis-sisu">
-      {@html uudis.sisu.replace(/\&nl\;/gi, '<br>')}
+      {@html uudis.sisu}
     </span>
     <br />
     <div class="uudis-metadata">
       <span>
-        {uudis.loodud.toDate ? moment(uudis.loodud.toDate()).fromNow() : 'mõni sekund tagasi'}
+        {#if uudis.uuendatud}
+          Uuendatud: {uudis.uuendatud.toDate ? moment(uudis.uuendatud.toDate()).fromNow() : 'mõni sekund tagasi'}
+        {:else}
+          Loodud: {uudis.loodud.toDate ? moment(uudis.loodud.toDate()).fromNow() : 'mõni sekund tagasi'}
+        {/if}
       </span>
       {#if $user && uudis.autor.uid === $user.uid}
+        <br />
+        <a href={`/redigeeri/${id}`} class="redigeeri">Redigeeri</a>
         <br />
         <span class="kustuta" on:click={kustuta}>Kustuta</span>
       {/if}

@@ -4,6 +4,16 @@
   import { uudised } from '@/stores/uudised';
 
   import UusUudis from './UusUudis.svelte';
+  import App from '@/App.svelte';
+
+  const urlRegex = new RegExp(
+    /<a href="https?:\/\/(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)" target="_blank">([a-zA-Z -]*)<\/a>/,
+    'g'
+  );
+  const imgRegex = new RegExp(
+    /<img src="https?:\/\/(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)" alt="([a-zA-Z -]*)" width="\d*" height="\d*"><\/img>/,
+    'g'
+  );
 </script>
 
 <style>
@@ -72,9 +82,11 @@
         </span>
         <br />
         <span class="uudis-sisu">
-          {uudis.sisu.length > 200 ? uudis.sisu
-                .substring(0, 200)
-                .replace(/\&nl\;/gi, ' ') + '...' : uudis.sisu}
+          {uudis.sisu
+            .replace(/\<br\>/gi, ' ')
+            .replace(urlRegex, '$3')
+            .replace(imgRegex, '$3')
+            .substring(0, 200) + '...'}
         </span>
         <div class="uudis-metadata">
           <span>Kommentaare: {uudis.kommentaare}</span>

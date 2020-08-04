@@ -1,5 +1,5 @@
 <script>
-  import { firestore } from '../../firebase';
+  import { firestore, analytics } from '@/firebase';
 
   import { user } from '@/stores/user';
 

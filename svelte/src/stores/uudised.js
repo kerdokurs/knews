@@ -28,6 +28,11 @@ function createStore() {
     add: (uudis) => update((data) => [...data, uudis]),
     del: (id) => update((data) => data.filter((uudis) => uudis.id !== id)),
     set: (data) => set(data),
+    update: (uudis) =>
+      update((data) => [
+        ...data.filter((_uudis) => _uudis.id !== uudis.id),
+        uudis,
+      ]),
   };
 }
 

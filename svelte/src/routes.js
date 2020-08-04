@@ -1,8 +1,9 @@
-import Home from './Home.svelte';
+import Home from '@/Home.svelte';
 
-import Uudis from './uudised/Uudis.svelte';
-import UusUudis from './uudised/UusUudis.svelte';
-import E404 from './E404.svelte';
+import Uudis from '@/uudised/Uudis.svelte';
+import UusUudis from '@/uudised/UusUudis.svelte';
+import Redigeeri from '@/uudised/Redigeeri.svelte';
+import E404 from '@/E404.svelte';
 
 const routes = [
   {
@@ -16,6 +17,10 @@ const routes = [
   {
     name: 'uus',
     component: UusUudis,
+  },
+  {
+    name: 'redigeeri/:id',
+    component: Redigeeri,
   },
   {
     name: '404',

@@ -6,7 +6,15 @@ service cloud.firestore {
     }
 
     function isEditor() {
-      return get(/databases/$(database)/documents/kasutajad/$(request.auth.uid)).data.editor == true;
+      return hasRole('editor');
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function hasRole(role) {
+      return request.auth != null && get(/databases/$(database)/documents/kasutajad/$(request.auth.uid)).data[role] == true;
     }
 
     match /kasutajad/{uid} {
@@ -16,16 +24,16 @@ service cloud.firestore {
     match /uudised/{uudis} {
       allow read;
 
-      allow create: if request.auth != null && request.resource.data.autor.uid == request.auth.uid && isEditor();
-      allow update: if request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid && isEditor();
-      allow delete: if request.auth != null && request.auth.uid == resource.data.autor.uid && isEditor();
+      allow create: if isAdmin() || (request.auth != null && request.resource.data.autor.uid == request.auth.uid && isEditor());
+      allow update: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid && isEditor());
+      allow delete: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.autor.uid && isEditor());
 
       match /kommentaarid/{kommentaar} {
         allow read;
 
-        allow create: if request.auth != null && request.resource.data.autor.uid == request.auth.uid;
-        allow update: if request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid;
-        allow delete: if request.auth != null && request.auth.uid == resource.data.autor.uid;
+        allow create: if isAdmin() || (request.auth != null && request.resource.data.autor.uid == request.auth.uid);
+        allow update: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid);
+        allow delete: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.autor.uid);
       }
     }
   }

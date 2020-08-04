@@ -1,30 +1,40 @@
 <script>
   import { firestore, serverTimestamp, analytics } from '@/firebase';
   import { navigateTo } from 'svelte-router-spa';
+  import { v4 as uuid } from 'uuid';
 
   import { uudised } from '@/stores/uudised';
   import { user } from '@/stores/user';
 
+  const urlRegex = new RegExp(
+    /<link>\[([a-zA-Z -]*)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))\)/,
+    'g'
+  );
+  const imgRegex = new RegExp(
+    /<img>\[([a-zA-Z -]*)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))\)\{(\d+),?(\d+)?\}/,
+    'g'
+  );
+
+  const id = uuid();
+
   let uudis = {
+    id,
     pealkiri: '',
     sisu: '',
   };
 
+  console.log(uudis.id);
+
   async function onSubmit() {
     if (!$user) return;
 
-    const id = uudis.pealkiri
-      .toLowerCase()
-      .substring(0, 40)
-      .replace(/([\\\\\/?!.,-<>_'*~=+])/gi, '')
-      .replace(/[õö]/gi, 'o')
-      .replace(/ä/gi, 'a')
-      .replace(/ü/gi, 'u')
-      .split(' ')
-      .join('-');
-
-    uudis.id = id;
-    uudis.sisu = uudis.sisu.replace(/\n/gi, '&nl;');
+    uudis.sisu = uudis.sisu
+      .replace(/\n/gi, '<br>')
+      .replace(urlRegex, '<a href="$2" target="_blank">$1</a>')
+      .replace(
+        imgRegex,
+        '<img src="$2" alt="$1" width="$5" height="$6"></img>'
+      );
     uudis.loodud = serverTimestamp();
     uudis.autor = {
       uid: $user.uid,

@@ -14,3 +14,7 @@ body {
   box-sizing: border-box;
   font-family: Montserrat, 'Helvetica Neue', sans-serif;
 }
+
+img {
+  max-width: 90%;
+}
