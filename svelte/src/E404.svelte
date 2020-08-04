@@ -1,6 +1,5 @@
 <script>
   export let currentRoute;
-  export let params;
 
   const id = currentRoute.queryParams.id;
 </script>

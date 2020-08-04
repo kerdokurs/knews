@@ -1,15 +1,10 @@
 <script>
   import { Router } from 'svelte-router-spa';
   import { routes } from './routes';
-  import { firestore } from './firebase';
 
   import Navigation from '@/Navigation.svelte';
 
-  import { onMount } from 'svelte';
-
-  import { uudised } from './stores/uudised';
-
-  onMount(async () => {});
+  import './stores/uudised';
 </script>
 
 <style>

@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { firestore } from '@/firebase';
 
-const ref = firestore.collection('uudised').orderBy('loodud', 'desc').limit(10);
+const ref = firestore.collection('uudised').orderBy('loodud', 'desc');
 
 const uudised = createStore();
 

@@ -1,5 +1,5 @@
 <script>
-  import { firestore, serverTimestamp, analytics } from '@/firebase';
+  import { firestore, serverTimestamp, analytics, login } from '@/firebase';
 
   import { user } from '@/stores/user';
 
@@ -36,7 +36,7 @@
 
 <section class="uus-kommentaar">
   {#if !$user}
-    <p>Kommentaaride lisamiseks pead olema sisselogitud.</p>
+    <button on:click={login}>Logi sisse</button>
   {:else}
     <form on:submit|preventDefault={onSubmit}>
       <div class="row">

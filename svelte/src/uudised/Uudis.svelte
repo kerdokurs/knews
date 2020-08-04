@@ -12,10 +12,8 @@
   import { navigateTo } from 'svelte-router-spa';
 
   export let currentRoute;
-  export let params = {};
 
   const id = currentRoute.namedParams.id;
-  console.log($uudised, typeof $uudised);
   $: uudis = $uudised.filter((uudis) => uudis.id === id)[0];
 
   async function kustuta() {
@@ -29,9 +27,6 @@
 </script>
 
 <style>
-  .uudis {
-  }
-
   .uudis-title {
     font-family: Recursive, sans-serif;
     font-size: 2.5em;
