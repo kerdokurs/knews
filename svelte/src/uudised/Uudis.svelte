@@ -58,7 +58,7 @@
     <span class="uudis-title">{uudis.pealkiri}</span>
     <br />
     <span class="uudis-sisu">
-      {@html uudis.sisu.replace(/\&nl\;/gi, '<br>')}
+      {@html uudis.sisu}
     </span>
     <br />
     <div class="uudis-metadata">

@@ -5,6 +5,17 @@
   import { uudised } from '@/stores/uudised';
   import { user } from '@/stores/user';
 
+  const urlRegex = new RegExp(
+    /<link>\[([a-zA-Z -]*)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))\)/,
+    'g'
+  );
+  const imgRegex = new RegExp(
+    /<img>\[([a-zA-Z -]*)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))\)\{(\d+),?(\d+)?\}/,
+    'g'
+  );
+
+  // TODO: Lisa funktsionaalsus piltide lisamiseks Firebase Storage-st.
+
   let uudis = {
     pealkiri: '',
     sisu: '',
@@ -22,9 +33,16 @@
       .replace(/ü/gi, 'u')
       .split(' ')
       .join('-');
+    //TODO: Äkki oleks targem lihtsat genereerida id?
 
     uudis.id = id;
-    uudis.sisu = uudis.sisu.replace(/\n/gi, '&nl;');
+    uudis.sisu = uudis.sisu
+      .replace(/\n/gi, '<br>')
+      .replace(urlRegex, '<a href="$2" target="_blank">$1</a>')
+      .replace(
+        imgRegex,
+        '<img src="$2" alt="$1" width="$5" height="$6"></img>'
+      );
     uudis.loodud = serverTimestamp();
     uudis.autor = {
       uid: $user.uid,
