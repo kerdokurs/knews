@@ -2,8 +2,8 @@
   import { firestore, serverTimestamp, analytics } from '@/firebase';
   import { navigateTo } from 'svelte-router-spa';
 
+  import { uudised } from '@/stores/uudised';
   import { user } from '@/stores/user';
-  import { laeUudised } from '@/laeUudised';
 
   let uudis = {
     pealkiri: '',
@@ -32,12 +32,10 @@
     };
     uudis.kommentaare = 0;
 
-    console.log(uudis.sisu);
-
     await firestore.collection('uudised').doc(uudis.id).set(uudis);
     analytics.logEvent('add_new', { name: 'Uus uudis' });
+    uudised.add(uudis);
     uudis = {};
-    laeUudised();
     navigateTo(`uudis/${id}`);
   }
 </script>

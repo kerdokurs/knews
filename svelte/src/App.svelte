@@ -9,8 +9,6 @@
 
   import { uudised } from './stores/uudised';
 
-  import './laeUudised';
-
   onMount(async () => {});
 </script>
 

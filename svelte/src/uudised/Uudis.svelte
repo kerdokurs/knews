@@ -10,19 +10,18 @@
   moment.locale('et');
 
   import { navigateTo } from 'svelte-router-spa';
-  import { laeUudised } from '@/laeUudised';
 
   export let currentRoute;
   export let params = {};
 
-  laeUudised();
   const id = currentRoute.namedParams.id;
+  console.log($uudised, typeof $uudised);
   $: uudis = $uudised.filter((uudis) => uudis.id === id)[0];
 
   async function kustuta() {
     await firestore.collection('uudised').doc(id).delete();
     analytics.logEvent('remove_news', { name: 'Uudis kustutatud' });
-    laeUudised();
+    uudised.del(id);
     navigateTo('/');
   }
 
@@ -68,7 +67,9 @@
     </span>
     <br />
     <div class="uudis-metadata">
-      <span>{moment(uudis.loodud.toDate()).fromNow()}</span>
+      <span>
+        {uudis.loodud.toDate ? moment(uudis.loodud.toDate()).fromNow() : 'mõni sekund tagasi'}
+      </span>
       {#if $user && uudis.autor.uid === $user.uid}
         <br />
         <span class="kustuta" on:click={kustuta}>Kustuta</span>
