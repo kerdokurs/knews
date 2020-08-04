@@ -1,7 +1,7 @@
 <script>
   export let currentRoute;
 
-  const id = currentRoute.queryParams.id;
+  const id = currentRoute.queryParams ? currentRoute.queryParams.id : null;
 </script>
 
 <svelte:head>

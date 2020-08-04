@@ -5,6 +5,7 @@
 
   import { uudised } from '@/stores/uudised';
   import { user } from '@/stores/user';
+  import { rubriigid } from '@/stores/rubriigid';
 
   const urlRegex = new RegExp(
     /<link>\[([a-zA-Z -]*)\]\((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*))\)/,
@@ -15,19 +16,18 @@
     'g'
   );
 
-  const id = uuid();
-
   let uudis = {
-    id,
     pealkiri: '',
     sisu: '',
+    rubriik: $rubriigid[0],
   };
-
-  console.log(uudis.id);
 
   async function onSubmit() {
     if (!$user) return;
 
+    const doc = firestore.collection('uudised').doc();
+
+    uudis.id = doc.id;
     uudis.sisu = uudis.sisu
       .replace(/\n/gi, '<br>')
       .replace(urlRegex, '<a href="$2" target="_blank">$1</a>')
@@ -41,8 +41,12 @@
       displayName: $user.displayName,
     };
     uudis.kommentaare = 0;
+    uudis.rubriik = {
+      id: uudis.rubriik.id,
+      pealkiri: uudis.rubriik.pealkiri,
+    };
 
-    await firestore.collection('uudised').doc(uudis.id).set(uudis);
+    await doc.set(uudis);
     analytics.logEvent('add_new', { name: 'Uus uudis' });
     uudised.add(uudis);
     uudis = {};
@@ -50,8 +54,12 @@
   }
 </script>
 
+<svelte:head>
+  <title>Uus uudis - kNews</title>
+</svelte:head>
+
 <section class="uus-uudis">
-  {#if $user}
+  {#if $user && $user.editor}
     <form on:submit|preventDefault={onSubmit}>
       <div class="row">
         <div class="six columns">
@@ -78,9 +86,23 @@
             bind:value={uudis.sisu} />
         </div>
       </div>
+      <div class="row">
+        <div class="four columns">
+          <label for="rubriik">Rubriik</label>
+          <select
+            id="rubriik"
+            class="u-full-width"
+            required
+            bind:value={uudis.rubriik}>
+            {#each $rubriigid as rubriik}
+              <option value={rubriik}>{rubriik.pealkiri}</option>
+            {/each}
+          </select>
+        </div>
+      </div>
       <button type="submit">Lisa</button>
     </form>
   {:else}
-    <p>Uudiste lisamiseks pead olema sisselogitud.</p>
+    <p>Uudiste lisamiseks pead olema toimetaja.</p>
   {/if}
 </section>

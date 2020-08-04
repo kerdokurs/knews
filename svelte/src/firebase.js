@@ -24,7 +24,7 @@ const analytics = firebase.analytics();
 const performance = firebase.performance();
 
 const firestore = firebase.firestore();
-firestore.settings({ host: 'localhost:8080', ssl: false });
+// firestore.settings({ host: 'localhost:8080', ssl: false });
 
 const storage = firebase.storage();
 

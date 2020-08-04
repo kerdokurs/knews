@@ -32,6 +32,10 @@
     font-size: 2.5em;
   }
 
+  .uudis-rubriik a {
+    font-size: 0.9em;
+  }
+
   .uudis-sisu {
     line-height: 2em;
   }
@@ -68,9 +72,15 @@
     </span>
     <br />
     <div class="uudis-metadata">
+      {#if uudis.rubriik}
+        <span class="uudis-rubriik">
+          <a href={`/rubriik/${uudis.rubriik.id}`}>{uudis.rubriik.pealkiri}</a>
+        </span>
+        <br />
+      {/if}
       <span>
-        {#if uudis.uuendatud}
-          Uuendatud: {uudis.uuendatud.toDate ? moment(uudis.uuendatud.toDate()).fromNow() : 'mõni sekund tagasi'}
+        {#if uudis.muudetud}
+          Uuendatud: {uudis.muudetud.toDate ? moment(uudis.muudetud.toDate()).fromNow() : 'mõni sekund tagasi'}
         {:else}
           Loodud: {uudis.loodud.toDate ? moment(uudis.loodud.toDate()).fromNow() : 'mõni sekund tagasi'}
         {/if}

@@ -21,6 +21,14 @@ service cloud.firestore {
       allow read, update: if request.auth != null && request.auth.uid == uid;
     }
 
+    match /rubriigid/{rubriik} {
+      allow read;
+
+      allow create: if isAdmin() || (request.auth != null && request.resource.data.autor.uid == request.auth.uid && isEditor());
+      allow update: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.autor.uid && request.resource.data.autor.uid == resource.data.autor.uid && isEditor());
+      allow delete: if isAdmin() || (request.auth != null && request.auth.uid == resource.data.autor.uid && isEditor());
+    }
+
     match /uudised/{uudis} {
       allow read;
 

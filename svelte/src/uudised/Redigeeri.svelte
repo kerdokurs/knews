@@ -26,6 +26,10 @@
   }
 </script>
 
+<svelte:head>
+  <title>Redigeeri: {uudis ? uudis.pealkiri : '...'} - kNews</title>
+</svelte:head>
+
 <section class="redigeeri-uudis">
   {#if uudis}
     <form on:submit|preventDefault={onSubmit}>
