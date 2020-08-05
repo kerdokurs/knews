@@ -85,7 +85,7 @@
           Loodud: {uudis.loodud.toDate ? moment(uudis.loodud.toDate()).fromNow() : 'mõni sekund tagasi'}
         {/if}
       </span>
-      {#if $user && uudis.autor.uid === $user.uid}
+      {#if $user && ((uudis.autor.uid === $user.uid && $user.editor) || $user.admin)}
         <br />
         <a href={`/redigeeri/${id}`} class="redigeeri">Redigeeri</a>
         <br />

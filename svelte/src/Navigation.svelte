@@ -55,9 +55,6 @@
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     background-color: #fff;
-    border: 1px solid #d1d1d1;
-    border-top: none;
-    border-radius: 3px;
   }
 
   .dropdown-content a,

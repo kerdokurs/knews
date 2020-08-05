@@ -46,8 +46,11 @@ auth.onAuthStateChanged(async (_user) => {
   if (_user) {
     const { uid, displayName } = _user;
     const userRecord = await firestore.collection('kasutajad').doc(uid).get();
-    const { editor } = userRecord.data() || { editor: false };
-    user.set({ uid, displayName, editor });
+    const { editor, admin } = userRecord.data() || {
+      editor: false,
+      admin: false,
+    };
+    user.set({ uid, displayName, editor, admin });
   } else {
     user.set(null);
   }

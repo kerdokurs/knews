@@ -60,7 +60,7 @@
         </li>
       {/each}
     </ul>
-    {#if $user && $user.editor}
+    {#if $user && ($user.editor || $user.admin)}
       <br />
       <span class="kustuta" on:click={kustuta}>Kustuta</span>
     {/if}

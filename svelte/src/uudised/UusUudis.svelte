@@ -50,7 +50,7 @@
     analytics.logEvent('add_new', { name: 'Uus uudis' });
     uudised.add(uudis);
     uudis = {};
-    navigateTo(`uudis/${id}`);
+    navigateTo(`uudis/${doc.id}`);
   }
 </script>
 
