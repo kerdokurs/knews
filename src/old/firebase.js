@@ -5,6 +5,8 @@ import 'firebase/storage';
 import 'firebase/analytics';
 import 'firebase/performance';
 
+import { user } from '@/stores/user';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyBoZFqoN04m6pYOSVnOvHRhEJWxudWdnuQ',
   authDomain: 'kerdo-me.firebaseapp.com',
@@ -40,7 +42,7 @@ const logout = () => {
   auth.signOut();
 };
 
-/* auth.onAuthStateChanged(async (_user) => {
+auth.onAuthStateChanged(async (_user) => {
   if (_user) {
     const { uid, displayName } = _user;
     const userRecord = await firestore.collection('kasutajad').doc(uid).get();
@@ -52,7 +54,7 @@ const logout = () => {
   } else {
     user.set(null);
   }
-}); */
+});
 
 export {
   storage,

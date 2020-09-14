@@ -36,4 +36,4 @@ function createStore() {
   };
 }
 
-export default uudised;
+export { uudised };

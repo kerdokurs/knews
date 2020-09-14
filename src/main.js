@@ -5,10 +5,3 @@ const app = new App({
 });
 
 export default app;
-
-// TODO
-/*
-  ! (!) Circular dependency
-  ! src\App.svelte -> src\routes.js -> src\Home.svelte -> src\uudised\Uudised.svelte -> src\App.svelte
-*/
-//* Paranda navigatsiooniriba.

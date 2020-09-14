@@ -1,19 +1,8 @@
 <script>
-  import { Router } from 'svelte-router-spa';
-  import { routes } from './routes';
-
-  import Navigation from '@/Navigation.svelte';
-
-  import './stores/uudised';
+  import { Router } from '@sveltech/routify';
+  import { routes } from '@sveltech/routify/tmp/routes';
 </script>
 
-<style>
-
-</style>
-
-<main>
-  <Navigation />
-  <div class="container">
-    <Router {routes} />
-  </div>
-</main>
+<div class="container">
+  <Router {routes} />
+</div>

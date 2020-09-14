@@ -4,7 +4,6 @@
   import { uudised } from '@/stores/uudised';
 
   import UusUudis from './UusUudis.svelte';
-  import App from '@/App.svelte';
 
   const urlRegex = new RegExp(
     /<a href="https?:\/\/(www.)?[-a-zA-Z0-9@:%._+~#=]{1,256}.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)" target="_blank">([a-zA-Z -]*)<\/a>/,
