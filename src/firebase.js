@@ -8,14 +8,14 @@ import 'firebase/performance';
 import { user } from '@/stores/user';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCtj5VpV1XKY_GlhaHj8A05fWx6bgfyPHo',
-  authDomain: 'kerdo-news.firebaseapp.com',
-  databaseURL: 'https://kerdo-news.firebaseio.com',
-  projectId: 'kerdo-news',
-  storageBucket: 'kerdo-news.appspot.com',
-  messagingSenderId: '1014467941405',
-  appId: '1:1014467941405:web:6a88fe8eaa483561f722f4',
-  measurementId: 'G-CD5YLTD231',
+  apiKey: 'AIzaSyBoZFqoN04m6pYOSVnOvHRhEJWxudWdnuQ',
+  authDomain: 'kerdo-me.firebaseapp.com',
+  databaseURL: 'https://kerdo-me.firebaseio.com',
+  projectId: 'kerdo-me',
+  storageBucket: 'kerdo-me.appspot.com',
+  messagingSenderId: '1083521061515',
+  appId: '1:1083521061515:web:0eb2e431e2021904e9ba8e',
+  measurementId: 'G-TQYG718587',
 };
 
 firebase.initializeApp(firebaseConfig);
